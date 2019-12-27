@@ -121,4 +121,16 @@ public class SkuController {
         return skuList;
     }
 
+    /**
+     * 查询status为1的总记录数
+     * @param map
+     * @return
+     */
+    @PostMapping("/count")
+    public String findTotalCount(@RequestBody Map<String,String> map){
+        int count = skuService.findCount(map);
+        String value = String.valueOf(count);
+        return value;
+    }
+
 }

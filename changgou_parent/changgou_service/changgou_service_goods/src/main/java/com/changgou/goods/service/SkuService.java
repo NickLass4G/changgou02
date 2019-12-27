@@ -64,6 +64,10 @@ public interface SkuService {
     Page<Sku> findPage(Map<String, Object> searchMap, int page, int size);
 
 
-
-
+    /**
+     * 查询状态为"1"的
+     * @param map
+     * @return
+     */
+    int findCount(Map<String, String> map);
 }

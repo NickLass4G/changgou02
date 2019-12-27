@@ -105,6 +105,20 @@ public class SkuServiceImpl implements SkuService {
     }
 
     /**
+     * 查询状态为"1"的
+     * @param map
+     * @return
+     */
+    @Override
+    public int findCount(Map<String, String> map) {
+        String status = map.get("status");
+        Sku sku = new Sku();
+        sku.setStatus("1");
+        int i = skuMapper.selectCount(sku);
+        return i;
+    }
+
+    /**
      * 构建查询对象
      * @param searchMap
      * @return
