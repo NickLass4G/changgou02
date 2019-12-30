@@ -22,6 +22,13 @@ public interface SpuService {
      */
     Goods findById(String id);
 
+
+    /**
+     * 根据ID查询
+     * @param id
+     * @return
+     */
+    Spu findSpuById(String id);
     /***
      * 新增
      * @param goods

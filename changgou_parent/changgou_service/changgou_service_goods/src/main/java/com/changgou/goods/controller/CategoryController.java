@@ -37,7 +37,7 @@ public class CategoryController implements CategoryApi {
      * @return
      */
     @GetMapping("/{id}")
-    public Result findById(@PathVariable Integer id){
+    public Result findById(@PathVariable("id") Integer id){
         Category category = categoryService.findById(id);
         return new Result(true,StatusCode.OK,"查询成功",category);
     }
@@ -116,7 +116,5 @@ public class CategoryController implements CategoryApi {
         List<Category> categoryList = categoryService.findByParentId(parentId);
         return new Result(true,StatusCode.OK,"查询成功",categoryList);
     }
-
-
 
 }

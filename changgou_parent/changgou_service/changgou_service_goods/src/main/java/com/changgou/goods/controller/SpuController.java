@@ -41,6 +41,17 @@ public class SpuController implements SpuApi{
         return new Result(true,StatusCode.OK,"查询成功",goods);
     }
 
+    /***
+     * 根据ID查询数据
+     * @param id
+     * @return
+     */
+    @GetMapping("/findSpuById/{id}")
+    public Result findSpuById(@PathVariable String id){
+        Spu spu = spuService.findSpuById(id);
+        return new Result(true,StatusCode.OK,"查询成功",spu);
+    }
+
 
     /***
      * 新增数据

@@ -207,6 +207,7 @@ public class SearchServiceImpl implements SearchService {
                     specSet.add(specMap.get(specKey));
                     // 将set集合放入到map集合
                     resultMap.put(specKey,specSet);
+                    Map<String,String> hashMap = new HashMap<>(13334);
                 }
             }
         }

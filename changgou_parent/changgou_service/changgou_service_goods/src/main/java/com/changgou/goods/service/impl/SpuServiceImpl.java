@@ -66,6 +66,16 @@ public class SpuServiceImpl implements SpuService {
         return goods;
     }
 
+    /**
+     * 根据id查询Spu
+     * @param id
+     * @return
+     */
+    @Override
+    public Spu findSpuById(String id) {
+        return spuMapper.selectByPrimaryKey(id);
+    }
+
 
     /**
      * 增加
