@@ -8,6 +8,12 @@ import java.util.Map;
 
 public interface SkuService {
 
+    /**
+     * 库存递减
+     * @param username
+     */
+    void decrCount(String username);
+
     /***
      * 查询所有
      * @return

@@ -25,13 +25,15 @@ public interface OrderService {
      * 新增
      * @param order
      */
-    void add(Order order);
+    String add(Order order);
 
     /***
      * 修改
      * @param order
      */
     void update(Order order);
+
+
 
     /***
      * 删除
@@ -64,6 +66,10 @@ public interface OrderService {
     Page<Order> findPage(Map<String, Object> searchMap, int page, int size);
 
 
-
-
+    /**
+     * 更新支付状态
+     * @param orderId
+     * @param transactionId
+     */
+    void updatePayStatus(String orderId, String transactionId);
 }

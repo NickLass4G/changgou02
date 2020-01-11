@@ -37,6 +37,21 @@ public class AddressServiceImpl implements AddressService {
         return  addressMapper.selectByPrimaryKey(id);
     }
 
+    /**
+     * 根据用户名查询
+     * @param username
+     * @return
+     */
+    @Override
+    public List<Address> list(String username) {
+        Example example = new Example(Address.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("username",username);
+        example.orderBy("isDefault").desc(); // 降序
+        List<Address> addressList = addressMapper.selectByExample(example);
+        return addressList;
+    }
+
 
     /**
      * 增加

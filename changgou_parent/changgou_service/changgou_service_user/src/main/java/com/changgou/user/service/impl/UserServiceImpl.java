@@ -1,22 +1,78 @@
 package com.changgou.user.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.changgou.order.pojo.Task;
+import com.changgou.user.dao.PointLogMapper;
 import com.changgou.user.dao.UserMapper;
+import com.changgou.user.pojo.PointLog;
 import com.changgou.user.service.UserService;
 import com.changgou.user.pojo.User;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private PointLogMapper pointLogMapper;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+
+    /**
+     * 修改用户积分
+     * @param task
+     * @return
+     */
+    @Override
+    @Transactional
+    public int updateUserPoints(Task task) {
+        Map info = JSON.parseObject(task.getRequestBody(), Map.class);
+        String username = info.get("username").toString();
+        String orderId = info.get("orderId").toString();
+        int point = (int) info.get("point");
+
+        // 判断当前订单是否操作过
+        PointLog pointLog = pointLogMapper.findLogInfoByOrderId(orderId);
+        if (pointLog != null){
+            return 0;
+        }
+
+        // 将任务存入到Redis
+        redisTemplate.boundValueOps(task.getId()).set("exist",1, TimeUnit.MINUTES);
+
+        // 修改用户积分
+        int result = userMapper.updateUserPoint(username,point);
+        if (result <= 0){
+            return result;
+        }
+
+        //添加积分日志表记录
+        pointLog = new PointLog();
+        pointLog.setOrderId(orderId);
+        pointLog.setPoint(point);
+        pointLog.setUserId(username);
+        result = pointLogMapper.insertSelective(pointLog);
+        if (result <= 0){
+            return result;
+        }
+        // 删除Redis中的记录
+        redisTemplate.delete(task.getId());
+        return 1;
+    }
 
     /**
      * 查询全部列表

@@ -21,6 +21,13 @@ public interface AddressService {
      */
     Address findById(Integer id);
 
+    /**
+     * 根据用户名查询
+     * @param username
+     * @return
+     */
+    List<Address> list(String username);
+
     /***
      * 新增
      * @param address

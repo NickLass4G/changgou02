@@ -6,6 +6,7 @@ import com.changgou.user.service.UserService;
 import com.changgou.user.pojo.User;
 import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,15 @@ public class UserController {
         return new Result(true,StatusCode.OK,"查询成功",user);
     }
 
+    /**
+     * 根据id查询用户
+     * @param username
+     * @return
+     */
+    @GetMapping("/load/{username}")
+    public User findUserInfo(@PathVariable("username") String username){
+        return userService.findById(username);
+    }
 
     /***
      * 新增数据
@@ -72,6 +82,7 @@ public class UserController {
      * @return
      */
     @DeleteMapping(value = "/{username}" )
+    @PreAuthorize("hasAnyAuthority('admin')")
     public Result delete(@PathVariable String username){
         userService.delete(username);
         return new Result(true,StatusCode.OK,"删除成功");

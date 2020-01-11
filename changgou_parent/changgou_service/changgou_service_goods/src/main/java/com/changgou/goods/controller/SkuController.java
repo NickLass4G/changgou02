@@ -20,6 +20,18 @@ public class SkuController {
     @Autowired
     private SkuService skuService;
 
+
+    /**
+     * 库存递减
+     * @param username
+     * @return
+     */
+    @PostMapping("/decr/count")
+    public Result decrCount(@RequestParam("username") String username){
+        skuService.decrCount(username);
+        return new Result(true,StatusCode.OK,"库存递减成功");
+    }
+
     /**
      * 查询全部数据
      * @return

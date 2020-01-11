@@ -2,11 +2,12 @@ package com.changgou.config.controller;
 import com.changgou.common.entity.PageResult;
 import com.changgou.common.entity.Result;
 import com.changgou.common.entity.StatusCode;
-import com.changgou.config.service.FreightTemplateService;
 import com.changgou.config.pojo.FreightTemplate;
+import com.changgou.config.service.FreightTemplateService;
 import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Map;
 @RestController
@@ -36,6 +37,7 @@ public class FreightTemplateController {
     @GetMapping("/{id}")
     public Result findById(@PathVariable Integer id){
         FreightTemplate freightTemplate = freightTemplateService.findById(id);
+
         return new Result(true,StatusCode.OK,"查询成功",freightTemplate);
     }
 

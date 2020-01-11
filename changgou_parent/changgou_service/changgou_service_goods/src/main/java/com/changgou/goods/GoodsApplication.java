@@ -6,6 +6,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.ComponentScan;
 import tk.mybatis.spring.annotation.MapperScan;
 
+//@SpringCloudApplication
 @SpringBootApplication
 @EnableEurekaClient
 @MapperScan(basePackages = {"com.changgou.goods.dao"})

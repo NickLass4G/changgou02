@@ -7,6 +7,7 @@ package com.changgou.common.model.response;
  * 24000-- 搜索错误代码
  * 25000-- 文件系统错误代码
  * 26000-- 后台管理系统错误代码
+ * 2700--  鉴权
  */
 public interface ResultCode {
     //操作是否成功,true为成功，false操作失败

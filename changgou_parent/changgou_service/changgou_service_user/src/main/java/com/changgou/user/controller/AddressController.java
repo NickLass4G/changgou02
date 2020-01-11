@@ -2,6 +2,7 @@ package com.changgou.user.controller;
 import com.changgou.common.entity.PageResult;
 import com.changgou.common.entity.Result;
 import com.changgou.common.entity.StatusCode;
+import com.changgou.user.config.TokenDecode;
 import com.changgou.user.service.AddressService;
 import com.changgou.user.pojo.Address;
 import com.github.pagehelper.Page;
@@ -17,6 +18,9 @@ public class AddressController {
 
     @Autowired
     private AddressService addressService;
+
+    @Autowired
+    private TokenDecode tokenDecode;
 
     /**
      * 查询全部数据
@@ -37,6 +41,17 @@ public class AddressController {
     public Result findById(@PathVariable Integer id){
         Address address = addressService.findById(id);
         return new Result(true,StatusCode.OK,"查询成功",address);
+    }
+
+    /**
+     * 根据用户名查询
+     * @return
+     */
+    @GetMapping("/list")
+    public Result findByUsername(){
+        String username = tokenDecode.getUserInfo().get("username");
+        List<Address> addressList = addressService.list(username);
+        return new Result(true,StatusCode.OK,"查询成功",addressList);
     }
 
 

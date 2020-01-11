@@ -3,10 +3,13 @@ package com.changgou.goods.service.impl;
 import com.changgou.goods.dao.SkuMapper;
 import com.changgou.goods.service.SkuService;
 import com.changgou.goods.pojo.Sku;
+import com.changgou.order.pojo.OrderItem;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
@@ -14,9 +17,33 @@ import java.util.Map;
 
 @Service
 public class SkuServiceImpl implements SkuService {
-
     @Autowired
     private SkuMapper skuMapper;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    /**
+     * 库存递减
+     * @param username
+     */
+    @Override
+    @Transactional
+    public void decrCount(String username) {
+        // 获取购物车的数据
+        List<OrderItem> orderItemList = redisTemplate.boundHashOps("cart_" + username).values();
+
+        // 循环递减
+        for (OrderItem orderItem : orderItemList) {
+
+            int count = skuMapper.decrCount(orderItem);
+            if (count <= 0){
+                throw new RuntimeException("库存不足,下单失败");
+            }
+        }
+    }
+
+
 
     /**
      * 查询全部列表
